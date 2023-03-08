@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <pwd.h>
+#include <sys/types.h>
+#include <errno.h>
 
 int gm_cd(char **args);
 int gm_help(char **args);
@@ -177,9 +180,9 @@ void gm_loop(void)
 	char *line;
 	char **args;
 	int status;
-	
 	do {
-		printf("$ ");
+		char *p = getenv("USER"); //Get username
+		printf("%s $",p); 
 		line = gm_read_line();
 		args = gm_split_line(line);
 		status = gm_execute(args);
@@ -195,7 +198,7 @@ void gm_loop(void)
 
 int main(int argc, char **argv)
 {
-
+	
 	gm_loop();
 
 	return EXIT_SUCCESS;
