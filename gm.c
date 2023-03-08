@@ -9,7 +9,9 @@
 #include <pwd.h>
 #include <sys/types.h>
 #include <errno.h>
-
+#ifndef MAX_BUF
+#define MAX_BUF 200
+#endif
 int gm_cd(char **args);
 int gm_help(char **args);
 int gm_exit(char **args);
@@ -181,8 +183,10 @@ void gm_loop(void)
 	char **args;
 	int status;
 	do {
-		char *p = getenv("USER"); //Get username
-		printf("%s $",p); 
+		char path[MAX_BUF];
+		getcwd(path, MAX_BUF);
+		char *uid = getenv("USER"); //Get username
+		printf("[%s %s]$ ", uid, path); 
 		line = gm_read_line();
 		args = gm_split_line(line);
 		status = gm_execute(args);
