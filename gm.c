@@ -1,7 +1,4 @@
 #include <stdio.h>
-#define GM_RL_BUFSIZE 1024
-#define GM_TOK_BUFSIZE 64
-#define GM_TOK_DELIM " \t\r\n\a"
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,6 +9,12 @@
 #ifndef MAX_BUF
 #define MAX_BUF 200
 #endif
+#define GM_RL_BUFSIZE 1024
+#define GM_TOK_BUFSIZE 64
+#define GM_TOK_DELIM " \t\r\n\a"
+
+
+
 int gm_cd(char **args);
 int gm_help(char **args);
 int gm_exit(char **args);
@@ -151,11 +154,11 @@ char *gm_read_line(void)
 		fprintf(stderr, "gm: allocation error\n");
 		exit(EXIT_FAILURE);
 	}
-
+			
+	
 	while (1) {
 		// Read a character
 		c = getchar();
-
 		if (c == EOF || c == '\n') {
 			buffer[position] = '\0';
 			return buffer;
@@ -186,7 +189,7 @@ void gm_loop(void)
 		char path[MAX_BUF];
 		getcwd(path, MAX_BUF);
 		char *uid = getenv("USER"); //Get username
-		printf("[%s %s]$ ", uid, path); 
+		printf("[%s %s]$ ", uid,path);	
 		line = gm_read_line();
 		args = gm_split_line(line);
 		status = gm_execute(args);
@@ -202,7 +205,6 @@ void gm_loop(void)
 
 int main(int argc, char **argv)
 {
-	
 	gm_loop();
 
 	return EXIT_SUCCESS;
